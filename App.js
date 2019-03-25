@@ -1,21 +1,23 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { Component } from 'react';
+import { createDrawerNavigator, createAppContainer } from 'react-navigation';
+import HomeScreen from './screens/HomeScreen.js';
+import MapScreen from './screens/MapScreen';
 
-export default class App extends React.Component {
+const MyDrawerNavigator = createDrawerNavigator({
+  Home: {
+    screen: HomeScreen,
+  },
+  Map: {
+    screen: MapScreen,
+  },
+});
+
+export default class App extends Component {
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text>Test das ist Leons ZWeig</Text>
-      </View>
+      <MyApp />
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const MyApp = createAppContainer(MyDrawerNavigator);
