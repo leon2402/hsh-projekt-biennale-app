@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { createDrawerNavigator, createAppContainer } from 'react-navigation';
 import HomeScreen from './screens/HomeScreen.js';
 import MapScreen from './screens/MapScreen';
+import LocationListScreen from './screens/LocationListScreen';
 
 const MyDrawerNavigator = createDrawerNavigator({
   Home: {
@@ -9,6 +10,9 @@ const MyDrawerNavigator = createDrawerNavigator({
   },
   Map: {
     screen: MapScreen,
+  },
+    LocationList: {
+    screen: LocationListScreen,
   },
 });
 
