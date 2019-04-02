@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { createDrawerNavigator, createAppContainer } from 'react-navigation';
 import HomeScreen from './screens/HomeScreen.js';
 import MapScreen from './screens/MapScreen';
+import DetailsScreen from './screens/DetailsScreen';
 import LocationListScreen from './screens/LocationListScreen';
 
 const MyDrawerNavigator = createDrawerNavigator({
@@ -14,7 +15,13 @@ const MyDrawerNavigator = createDrawerNavigator({
     LocationList: {
     screen: LocationListScreen,
   },
+    Details: {
+    screen: DetailsScreen,
+  },
 });
+
+
+
 
 export default class App extends Component {
 
@@ -25,3 +32,4 @@ export default class App extends Component {
   }
 }
 const MyApp = createAppContainer(MyDrawerNavigator);
+

@@ -3,9 +3,17 @@ import { Alert, StyleSheet } from 'react-native';
 import { Container, Header, Title, Button, Left, Right, Body, Icon, Content, Text, List, ListItem, Thumbnail, Item, Input } from 'native-base';
 
 export default class LocationListScreen extends React.Component {
-  static navigationOptions = {
+static navigationOptions = ({ navigation }) => {
+    
+    const params = navigation.state.params || {};
+  
     drawerLabel: 'Location List '
   };
+
+test(){
+    alert('Hello World')
+}
+
   render() {
     return (
       <Container>
@@ -41,7 +49,14 @@ export default class LocationListScreen extends React.Component {
                 <Text>German Pavilion</Text>
               </Body>
               <Right>
-                <Icon name="arrow-forward" />
+                <Icon name="arrow-forward"  onPress={() => {
+            /* 1. Navigate to the Details route with params */
+            this.props.navigation.navigate('Details', {
+              //itemId: 86,
+             // otherParam: 'First Details',
+            });
+          }}/>
+             
               </Right>
     
             </ListItem>
@@ -53,7 +68,7 @@ export default class LocationListScreen extends React.Component {
                 <Text>French Pavilion</Text>
               </Body>
               <Right>
-                <Icon name="arrow-forward" />
+                <Icon name="arrow-forward" onPress={() => this.test()}/>
               </Right>
             </ListItem>
             
