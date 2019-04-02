@@ -1,12 +1,54 @@
 import React from 'react';
-import { Alert, StyleSheet } from 'react-native';
-import { Container, Header, Title, Button, Left, Right, Body, Icon, Content, Text } from 'native-base';
+import { StyleSheet } from 'react-native';
+import { Container, Header, Title, Button, Left, Right, Body, Icon, Content, Text, List, ListItem} from 'native-base';
+import firebase from '../firebase';
+
+
 
 export default class MapScreen extends React.Component {
   static navigationOptions = {
     drawerLabel: 'Map '
   };
+
+  constructor() {
+    super();
+    this.ref = firebase.firestore().collection('locations');
+    this.unsubscribe = null;
+    this.state = {
+      isLoading: true,
+      locations: []
+    };
+  }
+  onCollectionUpdate = (querySnapshot) => {
+    const locations = [];
+    querySnapshot.forEach((doc) => {
+      const { name } = doc.data();
+      locations.push({
+        key: doc.id,
+        doc, // DocumentSnapshot
+        name,
+      });
+    });
+    this.setState({
+      locations,
+      isLoading: false,
+   });
+  }
+  componentDidMount() {
+    this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+  }
+  
+ 
+
+
   render() {
+    if(this.state.isLoading){
+      return(
+        <Container>
+          <Text>Loading</Text>
+        </Container>
+      )
+    }else {
     return (
       <Container>
         <Header>
@@ -21,20 +63,24 @@ export default class MapScreen extends React.Component {
           <Right />
         </Header>
         <Content>
-          <Button onPress={() => { Alert.alert('You tapped the button!');}} success >
-            <Text>Klick mich!</Text>
-          </Button>
+        <List>
+          { 
+            this.state.locations.map((item, key) => (
+              <ListItem>
+                <Text>{item.name}</Text>
+              </ListItem>
+            ))
+          }
+        </List>
         </Content>
       </Container>
     );
+    }
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
+const style = StyleSheet.create({
+  map:{
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  }
 });
