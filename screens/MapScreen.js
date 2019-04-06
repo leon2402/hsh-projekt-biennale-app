@@ -1,32 +1,34 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { Container, Header, Title, Button, Left, Right, Body, Icon, Content, Text, List, ListItem} from 'native-base';
+import { MapView } from 'expo';
+import { Alert, StyleSheet } from 'react-native';
+import { Container, Header, Title, Button, Left, Right, Body, Icon, Content, Text } from 'native-base';
 import firebase from '../firebase';
-
-
 
 export default class MapScreen extends React.Component {
   static navigationOptions = {
     drawerLabel: 'Map '
   };
-
   constructor() {
     super();
     this.ref = firebase.firestore().collection('locations');
     this.unsubscribe = null;
     this.state = {
       isLoading: true,
-      locations: []
+      locations: [],
+      latitude: 45.430888,
+      longitude: 12.328734
     };
   }
   onCollectionUpdate = (querySnapshot) => {
     const locations = [];
     querySnapshot.forEach((doc) => {
-      const { name } = doc.data();
+      const { name, latitude, longitude } = doc.data();
       locations.push({
         key: doc.id,
         doc, // DocumentSnapshot
         name,
+        latitude,
+        longitude,
       });
     });
     this.setState({
@@ -37,10 +39,6 @@ export default class MapScreen extends React.Component {
   componentDidMount() {
     this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
   }
-  
- 
-
-
   render() {
     if(this.state.isLoading){
       return(
@@ -62,25 +60,29 @@ export default class MapScreen extends React.Component {
           </Body>
           <Right />
         </Header>
-        <Content>
-        <List>
-          { 
-            this.state.locations.map((item, key) => (
-              <ListItem>
-                <Text>{item.name}</Text>
-              </ListItem>
-            ))
-          }
-        </List>
-        </Content>
+
+      <MapView
+        style={{ flex: 1 }}
+        initialRegion={{
+          latitude: 45.435768,
+          longitude: 12.327924,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+        >
+        {this.state.locations.map((marker, index) => (
+          <MapView.Marker
+            coordinate={{
+              latitude: parseFloat(marker.latitude),
+              longitude: parseFloat(marker.longitude)}}
+            title={marker.title}
+            description={marker.description}
+            key={index}
+          />
+        ))} 
+        </MapView>
       </Container>
     );
     }
   }
 }
-
-const style = StyleSheet.create({
-  map:{
-    flex: 1,
-  }
-});
