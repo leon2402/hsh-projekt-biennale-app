@@ -2,16 +2,51 @@ import React from 'react';
 import { MapView } from 'expo';
 import { Alert, StyleSheet } from 'react-native';
 import { Container, Header, Title, Button, Left, Right, Body, Icon, Content, Text } from 'native-base';
+import firebase from '../firebase';
 
 export default class MapScreen extends React.Component {
   static navigationOptions = {
     drawerLabel: 'Map '
   };
-state={
-    longitude: 10.327924,
-    latitude: 45.435768,
-}
+  constructor() {
+    super();
+    this.ref = firebase.firestore().collection('locations');
+    this.unsubscribe = null;
+    this.state = {
+      isLoading: true,
+      locations: [],
+      latitude: 45.430888,
+      longitude: 12.328734
+    };
+  }
+  onCollectionUpdate = (querySnapshot) => {
+    const locations = [];
+    querySnapshot.forEach((doc) => {
+      const { name, latitude, longitude } = doc.data();
+      locations.push({
+        key: doc.id,
+        doc, // DocumentSnapshot
+        name,
+        latitude,
+        longitude,
+      });
+    });
+    this.setState({
+      locations,
+      isLoading: false,
+   });
+  }
+  componentDidMount() {
+    this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+  }
   render() {
+    if(this.state.isLoading){
+      return(
+        <Container>
+          <Text>Loading</Text>
+        </Container>
+      )
+    }else {
     return (
       <Container>
         <Header>
@@ -35,14 +70,19 @@ state={
           longitudeDelta: 0.0421,
         }}
         >
-        <MapView.Marker
-        coordinate={{
-            latitude: this.state.latitude,
-            longitude: this.state.longitude}}
-        />
+        {this.state.locations.map((marker, index) => (
+          <MapView.Marker
+            coordinate={{
+              latitude: parseFloat(marker.latitude),
+              longitude: parseFloat(marker.longitude)}}
+            title={marker.title}
+            description={marker.description}
+            key={index}
+          />
+        ))} 
         </MapView>
-
       </Container>
     );
   }
+}
 }
