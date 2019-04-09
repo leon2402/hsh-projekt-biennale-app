@@ -1,8 +1,10 @@
 import React from 'react';
-import { Alert, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Container, Header, Title, Button, Left, Right, Body, Icon, Content, Text, List, ListItem, Thumbnail, Item, Input } from 'native-base';
+import firebase from '../firebase';
 
 export default class LocationListScreen extends React.Component {
+
 static navigationOptions = ({ navigation }) => {
     
     const params = navigation.state.params || {};
@@ -10,9 +12,33 @@ static navigationOptions = ({ navigation }) => {
     drawerLabel: 'Location List '
   };
 
-test(){
-    alert('Hello World')
-}
+  constructor() {
+    super();
+    this.ref = firebase.firestore().collection('locations');
+    this.unsubscribe = null;
+    this.state = {
+      isLoading: true,
+      locations: []
+    };
+  }
+  onCollectionUpdate = (querySnapshot) => {
+    const locations = [];
+    querySnapshot.forEach((doc) => {
+      const { name } = doc.data();
+      locations.push({
+        key: doc.id,
+        doc, // DocumentSnapshot
+        name,
+      });
+    });
+    this.setState({
+      locations,
+      isLoading: false,
+   });
+  }
+  componentDidMount() {
+    this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+  }
 
   render() {
     return (
@@ -42,23 +68,21 @@ test(){
               <Text>Europe</Text>
             </ListItem>
             <ListItem thumbnail style={{borderBottom: 'black'}}>
-              <Left>
-                <Thumbnail square source={{ uri: 'http://graftlab.com/wp-content/uploads/2018/05/GRAFT_UnbuildingWalls_cJanBitterGRAFT_FI700x475.jpg' }} />
-              </Left>
-              <Body>
-                <Text>German Pavilion</Text>
-              </Body>
-              <Right>
+                <Left>
+                    <Thumbnail square source={{ uri: 'http://graftlab.com/wp-content/uploads/2018/05/GRAFT_UnbuildingWalls_cJanBitterGRAFT_FI700x475.jpg' }} />
+                </Left>
+                <Body>
+                    <Text>German Pavilion</Text>
+                </Body>
+                <Right>
                 <Icon name="arrow-forward"  onPress={() => {
-            /* 1. Navigate to the Details route with params */
-            this.props.navigation.navigate('Details', {
-              //itemId: 86,
-             // otherParam: 'First Details',
-            });
-          }}/>
-             
-              </Right>
-    
+                    /* 1. Navigate to the Details route with params */
+                    this.props.navigation.navigate('Details', {
+                    //itemId: 86,
+                    // otherParam: 'First Details',
+                    });
+                }}/>
+                </Right>
             </ListItem>
             <ListItem thumbnail>
               <Left>
@@ -86,6 +110,27 @@ test(){
                 <Icon name="arrow-forward" />
               </Right>
             </ListItem>
+            { 
+            this.state.locations.map((item, key) => (
+              <ListItem>
+                <Left>
+                    <Thumbnail square source={{ uri: 'http://graftlab.com/wp-content/uploads/2018/05/GRAFT_UnbuildingWalls_cJanBitterGRAFT_FI700x475.jpg' }} />
+                </Left>
+                <Body>
+                    
+                    <Text>{item.name}</Text>
+                </Body>
+                <Right>
+                    <Icon name="arrow-forward"  onPress={() => {
+                        /* 1. Navigate to the Details route with params */
+                        this.props.navigation.navigate('Details', {
+                            itemName: item.name,
+                        });
+                    }}/>
+                </Right>
+              </ListItem>
+            ))
+          }
           </List>
         </Content>
       </Container>

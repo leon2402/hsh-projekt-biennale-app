@@ -5,12 +5,7 @@ import { Container, Header, Title, Button, Left, Right, Body, Icon, Content, Tex
 export default class DetailsScreen extends React.Component {
   static navigationOptions = {
     drawerLabel:()=>null, 
-      
   };
-
-test(){
-    alert('Hello')
-}
 
   render() {
     return (
@@ -27,7 +22,7 @@ test(){
           <Right />
         </Header>
         <Content>
-          
+          <Text>{this.props.navigation.state.params.itemName}</Text>
         </Content>
       </Container>
     );
