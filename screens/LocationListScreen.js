@@ -18,23 +18,37 @@ static navigationOptions = ({ navigation }) => {
     this.unsubscribe = null;
     this.state = {
       isLoading: true,
-      locations: []
+      locations: [],
+        locationsEurope: [],
+        locationsAsia: [],
+        locationsAmerica: [],
+        locationsAfrica: [],
+        locationsOceania: []
     };
   }
   onCollectionUpdate = (querySnapshot) => {
     const locations = [];
     querySnapshot.forEach((doc) => {
-      const { name } = doc.data();
+      const { name, continent, imageLink, address, openFromTo } = doc.data();
       locations.push({
         key: doc.id,
         doc, // DocumentSnapshot
         name,
+        continent,
+          imageLink,
+          address, 
+          openFromTo,
       });
     });
+    const locationsEurope = locations.filter(item => item.continent == "europe")
+    const locationsAsia = locations.filter(item => item.continent == "asia")
     this.setState({
       locations,
+      locationsEurope,
+        locationsAsia,
       isLoading: false,
    });
+    
   }
   componentDidMount() {
     this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
@@ -67,58 +81,46 @@ static navigationOptions = ({ navigation }) => {
             <ListItem itemDivider>
               <Text>Europe</Text>
             </ListItem>
-            <ListItem thumbnail style={{borderBottom: 'black'}}>
+             { 
+            this.state.locationsEurope.map((item, key) => (
+              <ListItem key={key}>
                 <Left>
-                    <Thumbnail square source={{ uri: 'http://graftlab.com/wp-content/uploads/2018/05/GRAFT_UnbuildingWalls_cJanBitterGRAFT_FI700x475.jpg' }} />
-                </Left>
-                <Body>
-                    <Text>German Pavilion</Text>
-                </Body>
-                <Right>
-                <Icon name="arrow-forward"  onPress={() => {
-                    /* 1. Navigate to the Details route with params */
-                    this.props.navigation.navigate('Details', {
-                    //itemId: 86,
-                    // otherParam: 'First Details',
-                    });
-                }}/>
-                </Right>
-            </ListItem>
-            <ListItem thumbnail>
-              <Left>
-                <Thumbnail square source={{ uri: 'http://graftlab.com/wp-content/uploads/2018/05/GRAFT_UnbuildingWalls_cJanBitterGRAFT_FI700x475.jpg' }} />
-              </Left>
-              <Body>
-                <Text>French Pavilion</Text>
-              </Body>
-              <Right>
-                <Icon name="arrow-forward" onPress={() => this.test()}/>
-              </Right>
-            </ListItem>
-            
-            <ListItem itemDivider>
-              <Text>Asia</Text>
-            </ListItem>
-            <ListItem thumbnail>
-              <Left>
-                <Thumbnail square source={{ uri: 'http://graftlab.com/wp-content/uploads/2018/05/GRAFT_UnbuildingWalls_cJanBitterGRAFT_FI700x475.jpg' }} />
-              </Left>
-              <Body>
-                <Text>Chinese Pavilion</Text>
-              </Body>
-              <Right>
-                <Icon name="arrow-forward" />
-              </Right>
-            </ListItem>
-            { 
-            this.state.locations.map((item, key) => (
-              <ListItem>
-                <Left>
-                    <Thumbnail square source={{ uri: 'http://graftlab.com/wp-content/uploads/2018/05/GRAFT_UnbuildingWalls_cJanBitterGRAFT_FI700x475.jpg' }} />
+                    <Thumbnail square source={{ uri: item.imageLink }} />
                 </Left>
                 <Body>
                     
                     <Text>{item.name}</Text>
+                    
+                </Body>
+                <Right>
+                    <Icon name="arrow-forward"  onPress={() => {
+                        /* 1. Navigate to the Details route with params */
+                        this.props.navigation.navigate('Details', {
+                            itemName: item.name,
+                            itemImageLink: item.imageLink,
+                            itemAddress: item.address,
+                            itemOpeningHours: item.openFromTo
+                        });
+                    }}/>
+                </Right>
+              </ListItem>
+            ))
+          }
+           
+            
+            <ListItem itemDivider>
+              <Text>Asia</Text>
+            </ListItem>
+            { 
+            this.state.locationsAsia.map((item, key) => (
+              <ListItem key={key}>
+                <Left>
+                    <Thumbnail square source={{ uri: item.imageLink }} />
+                </Left>
+                <Body>
+                    
+                    <Text>{item.name}</Text>
+                    
                 </Body>
                 <Right>
                     <Icon name="arrow-forward"  onPress={() => {
@@ -131,6 +133,7 @@ static navigationOptions = ({ navigation }) => {
               </ListItem>
             ))
           }
+            
           </List>
         </Content>
       </Container>
