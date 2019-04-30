@@ -33,9 +33,9 @@ export default class LocationListScreen extends React.Component {
         doc, // DocumentSnapshot
         name,
         continent,
-          imageLink,
-          address, 
-          openFromTo,
+        imageLink,
+        address, 
+        openFromTo,
       });
     });
     const locationsEurope = locations.filter(item => item.continent == "europe")

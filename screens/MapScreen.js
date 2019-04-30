@@ -22,7 +22,7 @@ export default class MapScreen extends React.Component {
   onCollectionUpdate = (querySnapshot) => {
     const locations = [];
     querySnapshot.forEach((doc) => {
-      const { name, latitude, longitude, description } = doc.data();
+      const { name, latitude, longitude, description, imageLink, address, openFromTo } = doc.data();
       locations.push({
         key: doc.id,
         doc, // DocumentSnapshot
@@ -30,6 +30,9 @@ export default class MapScreen extends React.Component {
         latitude,
         longitude,
         description,
+        imageLink,
+        address, 
+        openFromTo
       });
     });
     this.setState({
@@ -89,6 +92,9 @@ export default class MapScreen extends React.Component {
                 /* 1. Navigate to the Details route with params */
                 this.props.navigation.navigate('Details', {
                     itemName: marker.name,
+                    itemImageLink: marker.imageLink,
+                    itemAddress: marker.address,
+                    itemOpeningHours: marker.openFromTo,
                     screen: 'Map'
                 });
             }}
