@@ -81,7 +81,16 @@ export default class LocationListScreen extends React.Component {
             </ListItem>
              { 
             this.state.locationsEurope.map((item, key) => (
-              <ListItem key={key}>
+              <ListItem key={key} onPress={() => {
+                /* 1. Navigate to the Details route with params */
+                  this.props.navigation.navigate('Details', {
+                      itemName: item.name,
+                      itemImageLink: item.imageLink,
+                      itemAddress: item.address,
+                      itemOpeningHours: item.openFromTo,
+                      screen: this.state.Screen
+                  });
+                }}>
                 <Left>
                     <Thumbnail square source={{ uri: item.imageLink }} />
                 </Left>
@@ -91,16 +100,7 @@ export default class LocationListScreen extends React.Component {
                     
                 </Body>
                 <Right>
-                    <Icon name="arrow-forward"  onPress={() => {
-                        /* 1. Navigate to the Details route with params */
-                        this.props.navigation.navigate('Details', {
-                            itemName: item.name,
-                            itemImageLink: item.imageLink,
-                            itemAddress: item.address,
-                            itemOpeningHours: item.openFromTo,
-                            screen: this.state.Screen
-                        });
-                    }}/>
+                    <Icon name="arrow-forward"  />
                 </Right>
               </ListItem>
             ))
@@ -112,7 +112,16 @@ export default class LocationListScreen extends React.Component {
             </ListItem>
             { 
             this.state.locationsAsia.map((item, key) => (
-              <ListItem key={key}>
+              <ListItem key={key} onPress={() => {
+                /* 1. Navigate to the Details route with params */
+                  this.props.navigation.navigate('Details', {
+                      itemName: item.name,
+                      itemImageLink: item.imageLink,
+                      itemAddress: item.address,
+                      itemOpeningHours: item.openFromTo,
+                      screen: this.state.Screen
+                  });
+                }}>
                 <Left>
                     <Thumbnail square source={{ uri: item.imageLink }} />
                 </Left>
@@ -122,16 +131,7 @@ export default class LocationListScreen extends React.Component {
                     
                 </Body>
                 <Right>
-                  <Icon name="arrow-forward"  onPress={() => {
-                        /* 1. Navigate to the Details route with params */
-                        this.props.navigation.navigate('Details', {
-                            itemName: item.name,
-                            itemImageLink: item.imageLink,
-                            itemAddress: item.address,
-                            itemOpeningHours: item.openFromTo,
-                            screen: this.state.Screen
-                        });
-                    }}/>
+                  <Icon name="arrow-forward"  />
                 </Right>
               </ListItem>
             ))
