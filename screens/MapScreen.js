@@ -22,13 +22,14 @@ export default class MapScreen extends React.Component {
   onCollectionUpdate = (querySnapshot) => {
     const locations = [];
     querySnapshot.forEach((doc) => {
-      const { name, latitude, longitude } = doc.data();
+      const { name, latitude, longitude, description } = doc.data();
       locations.push({
         key: doc.id,
         doc, // DocumentSnapshot
         name,
         latitude,
         longitude,
+        description,
       });
     });
     this.setState({
@@ -38,7 +39,12 @@ export default class MapScreen extends React.Component {
   }
   componentDidMount() {
     this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+    this.getLocationAsync();
   }
+  getLocationAsync = async () => {
+    await Permissions.askAsync(Permissions.LOCATION);
+  }
+
   render() {
     if(this.state.isLoading){
       return(
@@ -69,15 +75,24 @@ export default class MapScreen extends React.Component {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
+        showsUserLocation
         >
         {this.state.locations.map((marker, index) => (
           <MapView.Marker
             coordinate={{
               latitude: parseFloat(marker.latitude),
               longitude: parseFloat(marker.longitude)}}
-            title={marker.title}
-            description={marker.description}
-            key={index}
+              title={marker.name}
+              description={marker.description}
+              key={index}
+              onCalloutPress={() => {
+                /* 1. Navigate to the Details route with params */
+                this.props.navigation.navigate('Details', {
+                    itemName: marker.name,
+                    screen: 'Map'
+                });
+            }}
+
           />
         ))} 
         </MapView>
