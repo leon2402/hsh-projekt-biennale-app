@@ -23,17 +23,28 @@ export default class HomeScreen extends React.Component {
         </Header>
       <Content>
         <Card>
-        <CardItem header>
-            <H1>Map</H1>
-        </CardItem>
-        <CardItem button onPress={() => {
-                  /* 1. Navigate to the Details route with params */
-                  this.props.navigation.navigate('Map');
-                  }} >
-            <Image source={{uri: 'http://leonlan.wp.hs-hannover.de/bilder/biennale_map_screen.PNG'}} style={{height: 200, width: null, flex: 1}} /> 
-        </CardItem>
-       </Card>
-       <Card>
+          <CardItem header>
+              <H1>Map</H1>
+          </CardItem>
+          <CardItem button onPress={() => {
+                    /* 1. Navigate to the Details route with params */
+                    this.props.navigation.navigate('Map');
+                    }} >
+              <Image source={{uri: 'http://leonlan.wp.hs-hannover.de/bilder/biennale_map_screen.PNG'}} style={{height: 200, width: null, flex: 1}} /> 
+          </CardItem>
+        </Card>
+        <Card>
+          <CardItem header>
+              <H1>Location List</H1>
+          </CardItem>
+          <CardItem button onPress={() => {
+                    /* 1. Navigate to the Details route with params */
+                    this.props.navigation.navigate('LocationList');
+                    }} >
+              <Image source={{uri: 'http://leonlan.wp.hs-hannover.de/bilder/biennale_locationlist_screen.PNG'}} style={{height: 200, width: null, flex: 1}} /> 
+          </CardItem>
+        </Card>
+        <Card>
          <CardItem header>
             <H1>Impressum</H1>
           </CardItem>

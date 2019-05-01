@@ -1,6 +1,5 @@
 import React from 'react';
-import { MapView } from 'expo';
-import { Alert, StyleSheet } from 'react-native';
+import { MapView, Location, Permissions } from 'expo';
 import { Container, Header, Title, Button, Left, Right, Body, Icon, Content, Text } from 'native-base';
 import firebase from '../firebase';
 
@@ -45,8 +44,16 @@ export default class MapScreen extends React.Component {
     this.getLocationAsync();
   }
   getLocationAsync = async () => {
-    await Permissions.askAsync(Permissions.LOCATION);
-  }
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted') {
+      this.setState({
+        errorMessage: 'Permission to access location was denied',
+      });
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    this.setState({ location });
+  };
 
   render() {
     if(this.state.isLoading){
@@ -86,7 +93,7 @@ export default class MapScreen extends React.Component {
               latitude: parseFloat(marker.latitude),
               longitude: parseFloat(marker.longitude)}}
               title={marker.name}
-              description={marker.description}
+              
               key={index}
               onCalloutPress={() => {
                 /* 1. Navigate to the Details route with params */
