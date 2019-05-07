@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { StatusBar } from 'react-native'
 import { Root } from "native-base";
 import { Font, AppLoading } from "expo";
 import { createDrawerNavigator, createAppContainer } from 'react-navigation';
@@ -52,6 +53,7 @@ export default class App extends Component {
     }
     return (
       <Root>
+        <StatusBar hidden={true} />
         <MyApp />
       </Root>
     );

@@ -21,7 +21,10 @@ export default class MapScreen extends React.Component {
   onCollectionUpdate = (querySnapshot) => {
     const locations = [];
     querySnapshot.forEach((doc) => {
-      const { name, latitude, longitude, description, imageLink, address, openFromTo } = doc.data();
+      const { name, latitude, longitude, description, imageLink, address, openFromTo, title } = doc.data();
+      if(latitude == 0 || latitude == undefined || longitude == 0 || longitude == undefined ){
+
+      }else{
       locations.push({
         key: doc.id,
         doc, // DocumentSnapshot
@@ -31,8 +34,9 @@ export default class MapScreen extends React.Component {
         description,
         imageLink,
         address, 
-        openFromTo
-      });
+        openFromTo,
+        title
+      })};
     });
     this.setState({
       locations,
@@ -72,7 +76,7 @@ export default class MapScreen extends React.Component {
             </Button>
           </Left>
           <Body>
-            <Title>Header</Title>
+            <Title>Map</Title>
           </Body>
           <Right />
         </Header>
@@ -93,7 +97,7 @@ export default class MapScreen extends React.Component {
               latitude: parseFloat(marker.latitude),
               longitude: parseFloat(marker.longitude)}}
               title={marker.name}
-              
+              description={marker.title}
               key={index}
               onCalloutPress={() => {
                 /* 1. Navigate to the Details route with params */
@@ -102,12 +106,15 @@ export default class MapScreen extends React.Component {
                     itemImageLink: marker.imageLink,
                     itemAddress: marker.address,
                     itemOpeningHours: marker.openFromTo,
+                    itemLatitude: marker.latitude,
+                    itemLongitude: marker.longitude,
+                    itemTitle: marker.title,
                     screen: 'Map'
                 });
             }}
 
           />
-        ))} 
+        ))}
         </MapView>
       </Container>
     );

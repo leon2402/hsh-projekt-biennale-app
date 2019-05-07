@@ -1,12 +1,12 @@
 import React from 'react';
 import {  Image } from 'react-native';
 import { Container, Header, Title, Button, Left, Right, Body, Icon, Content, Text, List, ListItem, Thumbnail, Item, Input } from 'native-base';
+import { showLocation } from 'react-native-map-link'
 
 export default class DetailsScreen extends React.Component {
   static navigationOptions = {
     drawerLabel:()=>null, 
   };
-
   render() {
     const goBack = this.props.navigation.state.params.screen
     return (
@@ -33,18 +33,32 @@ export default class DetailsScreen extends React.Component {
                 style={{flex:1, height: 400}} 
                     />
             <List>
-            <ListItem>
-            <Text>Name: </Text>
-            <Text>{this.props.navigation.state.params.itemName}</Text>
-            </ListItem>
-            <ListItem>
-            <Text>Address: </Text>
-            <Text>{this.props.navigation.state.params.itemAddress} </Text>
-            </ListItem>
-            <ListItem>
-            <Text>Opening Hours: </Text>
-            <Text>{this.props.navigation.state.params.itemOpeningHours} </Text>
-            </ListItem>
+              <ListItem>
+                <Text>Name: </Text>
+                <Text>{this.props.navigation.state.params.itemName}</Text>
+              </ListItem>
+              <ListItem>
+                <Text>Title: </Text>
+                <Text>{this.props.navigation.state.params.itemTitle }</Text>
+              </ListItem>
+              <ListItem>
+                <Text>Address: </Text>
+                <Text>{this.props.navigation.state.params.itemAddress} </Text>
+              </ListItem>
+              <ListItem>
+                <Text>Opening Hours: </Text>
+                <Text>{this.props.navigation.state.params.itemOpeningHours} </Text>
+              </ListItem>
+              <ListItem>
+                <Button onPress={() => { showLocation({
+                                          latitude: (this.props.navigation.state.params.itemLatitude),
+                                          longitude: (this.props.navigation.state.params.itemLongitude),
+                                          title: (this.props.navigation.state.params.itemName),
+                                          googleForceLatLon: true,
+                                          }) }} >
+                  <Text>Navigate me to location</Text>
+                </Button>
+              </ListItem>
             </List>
         </Content>
       </Container>

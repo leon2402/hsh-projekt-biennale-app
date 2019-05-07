@@ -17,7 +17,7 @@ export default class HomeScreen extends React.Component {
             </Button>
           </Left>
           <Body>
-            <Title>Header</Title>
+            <Title>Home</Title>
           </Body>
           <Right />
         </Header>
@@ -30,7 +30,7 @@ export default class HomeScreen extends React.Component {
                     /* 1. Navigate to the Details route with params */
                     this.props.navigation.navigate('Map');
                     }} >
-              <Image source={{uri: 'http://leonlan.wp.hs-hannover.de/bilder/biennale_map_screen.PNG'}} style={{height: 200, width: null, flex: 1}} /> 
+              <Image source={{uri: 'http://biennale-app.wp.hs-hannover.de/biennale_images/biennale_map_screen.PNG'}} style={{height: 200, width: null, flex: 1}} /> 
           </CardItem>
         </Card>
         <Card>
@@ -41,7 +41,7 @@ export default class HomeScreen extends React.Component {
                     /* 1. Navigate to the Details route with params */
                     this.props.navigation.navigate('LocationList');
                     }} >
-              <Image source={{uri: 'http://leonlan.wp.hs-hannover.de/bilder/biennale_locationlist_screen.PNG'}} style={{height: 200, width: null, flex: 1}} /> 
+              <Image source={{uri: 'http://biennale-app.wp.hs-hannover.de/biennale_images/biennale_locationlist_screen.PNG'}} style={{height: 200, width: null, flex: 1}} /> 
           </CardItem>
         </Card>
         <Card>
@@ -52,7 +52,7 @@ export default class HomeScreen extends React.Component {
                   /* 1. Navigate to the Details route with params */
                   this.props.navigation.navigate('Impressum');
                   }} >
-              <Image source={{uri: 'http://kilianmodl.wp.hs-hannover.de/images/hshannover.jpg'}} style={{height: 200, width: null, flex: 1}} /> 
+              <Image source={{uri: 'http://biennale-app.wp.hs-hannover.de/biennale_images/hshannover.jpg'}} style={{height: 200, width: null, flex: 1}} /> 
           </CardItem>
         </Card>
       </Content>
