@@ -26,9 +26,13 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier" : "net.weblab.LaBiennalediVenezia",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "This apps uses your location to help you find the locations of biennale",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "This apps uses your location to help you find the locations of biennale",
+      },
     },
     "android": {
-      "versionCode": 6,
+      "versionCode": 8,
       "package": "com.weblab.LaViennalediVenezia",
       "config": {
         "googleMaps": {

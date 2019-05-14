@@ -26,7 +26,7 @@ export default class LocationListScreen extends React.Component {
   onCollectionUpdate = (querySnapshot) => {
     const locations = [];
     querySnapshot.forEach((doc) => {
-      const { name, continent, imageLink, address, openFromTo, latitude, longitude } = doc.data();
+      const { name, continent, imageLink, address, openFromTo, latitude, longitude, title } = doc.data();
       locations.push({
         key: doc.id,
         doc, // DocumentSnapshot
@@ -36,7 +36,8 @@ export default class LocationListScreen extends React.Component {
         address, 
         openFromTo,
         latitude,
-        longitude
+        longitude,
+        title
       });
     });
     const locationsEurope = locations.filter(item => item.continent == "europe")
