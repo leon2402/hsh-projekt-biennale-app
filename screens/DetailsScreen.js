@@ -1,19 +1,25 @@
 import React from 'react';
-import { Alert, StyleSheet, Image } from 'react-native';
+import {  Image } from 'react-native';
 import { Container, Header, Title, Button, Left, Right, Body, Icon, Content, Text, List, ListItem, Thumbnail, Item, Input } from 'native-base';
+import { showLocation } from 'react-native-map-link'
 
 export default class DetailsScreen extends React.Component {
   static navigationOptions = {
     drawerLabel:()=>null, 
   };
-
   render() {
+    const goBack = this.props.navigation.state.params.screen
     return (
       <Container>
         <Header>
           <Left>
             <Button transparent>
-              <Icon name='menu' onPress={() => this.props.navigation.openDrawer()} />
+              <Icon name='arrow-back' onPress={() => {
+                        /* 1. Navigate to the Details route with params */
+                        this.props.navigation.navigate(goBack, {
+                            
+                        });
+                    }}/> 
             </Button>
           </Left>
           <Body>
@@ -24,21 +30,35 @@ export default class DetailsScreen extends React.Component {
         <Content>
             <Image 
                 source={{uri: this.props.navigation.state.params.itemImageLink}} 
-                style={{width: 400, height: 400}} 
+                style={{flex:1, height: 400}} 
                     />
             <List>
-            <ListItem>
-            <Text>Name: </Text>
-            <Text>{this.props.navigation.state.params.itemName}</Text>
-            </ListItem>
-            <ListItem>
-            <Text>Address: </Text>
-            <Text>{this.props.navigation.state.params.itemAddress} </Text>
-            </ListItem>
-            <ListItem>
-            <Text>Opening Hours: </Text>
-            <Text>{this.props.navigation.state.params.itemOpeningHours} </Text>
-            </ListItem>
+              <ListItem>
+                <Text>Name: </Text>
+                <Text>{this.props.navigation.state.params.itemName}</Text>
+              </ListItem>
+              <ListItem>
+                <Text>Title: </Text>
+                <Text>{this.props.navigation.state.params.itemTitle }</Text>
+              </ListItem>
+              <ListItem>
+                <Text>Address: </Text>
+                <Text>{this.props.navigation.state.params.itemAddress} </Text>
+              </ListItem>
+              <ListItem>
+                <Text>Opening Hours: </Text>
+                <Text>{this.props.navigation.state.params.itemOpeningHours} </Text>
+              </ListItem>
+              <ListItem>
+                <Button onPress={() => { showLocation({
+                                          latitude: (this.props.navigation.state.params.itemLatitude),
+                                          longitude: (this.props.navigation.state.params.itemLongitude),
+                                          title: (this.props.navigation.state.params.itemName),
+                                          googleForceLatLon: true,
+                                          }) }} >
+                  <Text>Navigate me to location</Text>
+                </Button>
+              </ListItem>
             </List>
         </Content>
       </Container>
@@ -46,11 +66,3 @@ export default class DetailsScreen extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
