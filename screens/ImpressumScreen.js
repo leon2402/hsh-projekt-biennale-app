@@ -49,7 +49,7 @@ Faculty III
 Contact:
 
 Phone: +49 511 9296 2658
-E-Mail: thomas.schult@hs-hannover.de
+E-Mail: thomasj.schult@hs-hannover.de
                 `}</Text>
             </CardItem>
             <CardItem>
