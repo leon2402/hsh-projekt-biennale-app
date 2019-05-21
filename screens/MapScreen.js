@@ -1,6 +1,6 @@
 import React from 'react';
 import { MapView, Location, Permissions } from 'expo';
-import { Container, Header, Title, Button, Left, Right, Body, Icon, Content, Text } from 'native-base';
+import { Container, Header, Title, Button, Left, Right, Body, Icon, Content, Text, Spinner } from 'native-base';
 import firebase from '../firebase';
 
 export default class MapScreen extends React.Component {
@@ -63,7 +63,15 @@ export default class MapScreen extends React.Component {
     if(this.state.isLoading){
       return(
         <Container>
-          <Text>Loading</Text>
+         <Header />
+
+       <Content>
+
+         <Spinner color='blue' />
+
+           <Right><Text>Loading...</Text></Right>
+
+       </Content>
         </Container>
       )
     }else {

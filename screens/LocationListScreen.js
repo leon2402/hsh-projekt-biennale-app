@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Header, Title, Button, Left, Right, Body, Icon, Content, Text, List, ListItem, Thumbnail } from 'native-base';
+import { Container, Header, Title, Button, Left, Right, Body, Icon, Content, Text, List, ListItem, Thumbnail, Spinner } from 'native-base';
 import firebase from '../firebase';
 
 export default class LocationListScreen extends React.Component {
@@ -64,7 +64,11 @@ export default class LocationListScreen extends React.Component {
     if(this.state.isLoading){
       return(
         <Container>
-          <Text>Loading</Text>
+          <Header />
+       <Content>
+         <Spinner color='blue' />
+           <Right><Text>Loading...</Text></Right>
+       </Content>
         </Container>
       )
     }else {
