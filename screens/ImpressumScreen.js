@@ -41,7 +41,7 @@ export default class ImpressumScreen extends React.Component {
 Information according to § 5 TMG:
 
 Prof. Dr. Thomas J. Schult
-Hanover University
+HOCHSCHULE HANNOVER UNIVERSITY OF APPLIED SCIENCES AND ARTS
 Expo Plaza 12
 Faculty III
 30539 Hanover

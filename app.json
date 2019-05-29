@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Biennale Map Venice",
-    "description": "No more getting lost at the Venice Biennale! This app helps you find the venues. First, we provide details for the Architecture Biennale 2018 (May 26th - November 25th). We plan to have all national pavilions included on May 28th, 2018, based on information gathered on site. So don’t forget to update the app before actually going to Venice. In 2019, the app will be used to guide you through the Art Biennale 2019 in Venice. The creators are not affiliated with LaBiennaleDiVenezia, but with the University of Applied Sciences and Arts in Hanover, Germany.",
+    "description": "The App includes a navigation system, which makes it easy for you to find the locations you want to see. You will be able to  see more Art in less time and get more impressions of the Biennale Arte Venice.",
     "slug": "biennale-hsh-projekt",
     "privacy": "public",
     "sdkVersion": "32.0.0",
@@ -9,12 +9,12 @@
       "ios",
       "android"
     ],
-    "version": "3.0.0",
+    "version": "3.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "updates": {
@@ -28,17 +28,17 @@
       "bundleIdentifier" : "net.weblab.LaBiennalediVenezia",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "This apps uses your location to help you find the locations of biennale",
-        "NSLocationAlwaysAndWhenInUseUsageDescription": "This apps uses your location to help you find the locations of biennale",
-      },
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "This apps uses your location to help you find the locations of biennale"
+      }
     },
     "android": {
-      "versionCode": 8,
+      "versionCode": 11,
       "package": "com.weblab.LaViennalediVenezia",
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyBlPI57z7-FmN1k63lN-FXu8FNrIEtkUsI",
-        },
-      },
-    },
+          "apiKey": "AIzaSyBlPI57z7-FmN1k63lN-FXu8FNrIEtkUsI"
+        }
+      }
+    }
   }
 }
