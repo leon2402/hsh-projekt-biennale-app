@@ -1,15 +1,11 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { Container, Header, Title, Button, Left, Right, Body, Icon, Content, Text, List, ListItem, Thumbnail, Item, Input } from 'native-base';
+import { Container, Header, Title, Button, Left, Right, Body, Icon, Content, Text, List, ListItem, Thumbnail, Spinner } from 'native-base';
 import firebase from '../firebase';
 
 export default class LocationListScreen extends React.Component {
 
-static navigationOptions = ({ navigation }) => {
-    
-    const params = navigation.state.params || {};
-  
-    drawerLabel: 'Location List '
+  static navigationOptions = {
+    drawerLabel: 'LocationList '
   };
 
   constructor() {
@@ -18,131 +14,313 @@ static navigationOptions = ({ navigation }) => {
     this.unsubscribe = null;
     this.state = {
       isLoading: true,
-      locations: []
+      locations: [],
+        locationsEurope: [],
+        locationsAsia: [],
+        locationsAmerica: [],
+        locationsAfrica: [],
+        locationsOceania: [],
+        showEurope: false,
+        showAsia: false,
+        showAmerica: false,
+        showOceania: false,
+        showAfrica:true,
+        Screen: 'LocationList'
     };
   }
   onCollectionUpdate = (querySnapshot) => {
     const locations = [];
     querySnapshot.forEach((doc) => {
-      const { name } = doc.data();
+      const { name, continent, imageLink, address, openFromTo, latitude, longitude, title } = doc.data();
       locations.push({
         key: doc.id,
         doc, // DocumentSnapshot
         name,
+        continent,
+        imageLink,
+        address, 
+        openFromTo,
+        latitude,
+        longitude,
+        title
       });
     });
+    const locationsEurope = locations.filter(item => item.continent == "europe")
+    const locationsAsia = locations.filter(item => item.continent == "asia")
+    const locationsAmerica = locations.filter(item => item.continent == "america")
+    const locationsAfrica = locations.filter(item => item.continent == "africa")
+    const locationsOceania = locations.filter(item => item.continent == "oceania")
     this.setState({
       locations,
+      locationsEurope,
+      locationsAsia,
+      locationsAmerica,
+      locationsAfrica,
+      locationsOceania,
       isLoading: false,
    });
+    
   }
   componentDidMount() {
     this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
   }
 
   render() {
-    return (
-      <Container>
-        <Header>
-          <Left>
-            <Button transparent>
-              <Icon name='menu' onPress={() => this.props.navigation.openDrawer()} />
-            </Button>
-          </Left>
-          <Body>
-            <Title>Location List</Title>
-          </Body>
-          <Right />
-        </Header>
-        <Content>
-            <Item>           
-            <Icon name="ios-search" style={{padding: 10}}/>            
-            <Input placeholder="Search" />
-            <Button transparent>
-            <Text>Go!</Text>
-          </Button>
-          </Item>
-          
-          <List>
-            <ListItem itemDivider>
-              <Text>Europe</Text>
-            </ListItem>
-            <ListItem thumbnail style={{borderBottom: 'black'}}>
+    if(this.state.isLoading){
+      return(
+        <Container>
+          <Header />
+          <Content>
+            <Spinner color='blue' />
+              <Right><Text>Loading...</Text></Right>
+          </Content>
+        </Container>
+      )
+    }else {
+      return (
+        <Container>
+          <Header>
+            <Left>
+              <Button transparent>
+                <Icon name='menu' onPress={() => this.props.navigation.openDrawer()} />
+              </Button>
+            </Left>
+            <Body>
+              <Title>Location List</Title>
+            </Body>
+            <Right />
+          </Header>
+          <Content>
+            <List>
+            <ListItem itemDivider onPress={() => { 
+                                    this.setState(prevState => 
+                                                  ({showAfrica: !prevState.showAfrica}));}}>
                 <Left>
-                    <Thumbnail square source={{ uri: 'http://graftlab.com/wp-content/uploads/2018/05/GRAFT_UnbuildingWalls_cJanBitterGRAFT_FI700x475.jpg' }} />
+                  <Text>Africa</Text>
                 </Left>
-                <Body>
-                    <Text>German Pavilion</Text>
-                </Body>
                 <Right>
-                <Icon name="arrow-forward"  onPress={() => {
-                    /* 1. Navigate to the Details route with params */
-                    this.props.navigation.navigate('Details', {
-                    //itemId: 86,
-                    // otherParam: 'First Details',
-                    });
-                }}/>
-                </Right>
-            </ListItem>
-            <ListItem thumbnail>
-              <Left>
-                <Thumbnail square source={{ uri: 'http://graftlab.com/wp-content/uploads/2018/05/GRAFT_UnbuildingWalls_cJanBitterGRAFT_FI700x475.jpg' }} />
-              </Left>
-              <Body>
-                <Text>French Pavilion</Text>
-              </Body>
-              <Right>
-                <Icon name="arrow-forward" onPress={() => this.test()}/>
-              </Right>
-            </ListItem>
-            
-            <ListItem itemDivider>
-              <Text>Asia</Text>
-            </ListItem>
-            <ListItem thumbnail>
-              <Left>
-                <Thumbnail square source={{ uri: 'http://graftlab.com/wp-content/uploads/2018/05/GRAFT_UnbuildingWalls_cJanBitterGRAFT_FI700x475.jpg' }} />
-              </Left>
-              <Body>
-                <Text>Chinese Pavilion</Text>
-              </Body>
-              <Right>
-                <Icon name="arrow-forward" />
-              </Right>
-            </ListItem>
-            { 
-            this.state.locations.map((item, key) => (
-              <ListItem>
-                <Left>
-                    <Thumbnail square source={{ uri: 'http://graftlab.com/wp-content/uploads/2018/05/GRAFT_UnbuildingWalls_cJanBitterGRAFT_FI700x475.jpg' }} />
-                </Left>
-                <Body>
-                    
-                    <Text>{item.name}</Text>
-                </Body>
-                <Right>
-                    <Icon name="arrow-forward"  onPress={() => {
-                        /* 1. Navigate to the Details route with params */
-                        this.props.navigation.navigate('Details', {
-                            itemName: item.name,
-                        });
-                    }}/>
+                  {
+                    this.state.showAfrica
+                      ?<Icon name="arrow-up"  />
+                      :<Icon name="arrow-down"  />
+                  }
                 </Right>
               </ListItem>
-            ))
-          }
-          </List>
-        </Content>
-      </Container>
-    );
+              { 
+              this.state.showAfrica
+                ?this.state.locationsAfrica.map((item, key) => (
+                  <ListItem thumbnail key={key} onPress={() => {
+                    /* 1. Navigate to the Details route with params */
+                      this.props.navigation.navigate('Details', {
+                          itemName: item.name,
+                          itemImageLink: item.imageLink,
+                          itemAddress: item.address,
+                          itemOpeningHours: item.openFromTo,
+                          itemLatitude: item.latitude,
+                          itemLongitude: item.longitude,
+                          itemTitle: item.title,
+                          screen: this.state.Screen
+                      });
+                    }}>
+                    <Left>
+                        <Thumbnail source={{ uri: item.imageLink }} />
+                    </Left>
+                    <Body>
+                        
+                        <Text>{item.name}</Text>
+                        
+                    </Body>
+                    <Right>
+                        <Icon name="arrow-forward"  />
+                    </Right>
+                  </ListItem>
+                  ))
+                  :<Text></Text>
+              }
+              <ListItem itemDivider onPress={() => { 
+                                    this.setState(prevState => 
+                                                  ({showAmerica: !prevState.showAmerica}));}}>
+                <Left>
+                  <Text>America</Text>
+                </Left>
+                <Right>
+                  {
+                    this.state.showAmerica
+                      ?<Icon name="arrow-up"  />
+                      :<Icon name="arrow-down"  />
+                  }
+                </Right>
+              </ListItem>
+              { 
+              this.state.showAmerica
+                ?this.state.locationsAmerica.map((item, key) => (
+                  <ListItem thumbnail key={key} onPress={() => {
+                    /* 1. Navigate to the Details route with params */
+                      this.props.navigation.navigate('Details', {
+                          itemName: item.name,
+                          itemImageLink: item.imageLink,
+                          itemAddress: item.address,
+                          itemOpeningHours: item.openFromTo,
+                          itemLatitude: item.latitude,
+                          itemLongitude: item.longitude,
+                          itemTitle: item.title,
+                          screen: this.state.Screen
+                      });
+                    }}>
+                    <Left>
+                        <Thumbnail source={{ uri: item.imageLink }} />
+                    </Left>
+                    <Body>
+                        
+                        <Text>{item.name}</Text>
+                        
+                    </Body>
+                    <Right>
+                        <Icon name="arrow-forward"  />
+                    </Right>
+                  </ListItem>
+                  ))
+                :<Text></Text>
+              }
+              <ListItem itemDivider onPress={() => { 
+                                    this.setState(prevState => 
+                                                  ({showAsia: !prevState.showAsia}));}}>
+                <Left>
+                  <Text>Asia</Text>
+                </Left>
+                <Right>
+                  {
+                    this.state.showAsia
+                      ?<Icon name="arrow-up"  />
+                      :<Icon name="arrow-down"  />
+                  }
+                </Right>
+              </ListItem>
+              {
+              this.state.showAsia
+                ?this.state.locationsAsia.map((item, key) => (
+                  <ListItem thumbnail key={key} onPress={() => {
+                    /* 1. Navigate to the Details route with params */
+                      this.props.navigation.navigate('Details', {
+                          itemName: item.name,
+                          itemImageLink: item.imageLink,
+                          itemAddress: item.address,
+                          itemOpeningHours: item.openFromTo,
+                          itemLatitude: item.latitude,
+                          itemLongitude: item.longitude,
+                          itemTitle: item.title,
+                          screen: this.state.Screen
+                      });
+                    }}>
+                    <Left>
+                        <Thumbnail source={{ uri: item.imageLink }} />
+                    </Left>
+                    <Body>
+                        
+                        <Text>{item.name}</Text>
+                        
+                    </Body>
+                    <Right>
+                      <Icon name="arrow-forward"  />
+                    </Right>
+                  </ListItem>
+                  ))
+                  :<Text></Text>
+              } 
+              <ListItem itemDivider onPress={() => { 
+                                    this.setState(prevState => 
+                                                  ({showEurope: !prevState.showEurope}));}}>
+                <Left>
+                  <Text>Europe</Text>
+                </Left>
+                <Right>
+                  {
+                    this.state.showEurope
+                      ?<Icon name="arrow-up"  />
+                      :<Icon name="arrow-down"  />
+                  }
+                </Right>
+              </ListItem>
+              { 
+              this.state.showEurope
+                ?this.state.locationsEurope.map((item, key) => (
+                  <ListItem thumbnail key={key} onPress={() => {
+                    /* 1. Navigate to the Details route with params */
+                      this.props.navigation.navigate('Details', {
+                          itemName: item.name,
+                          itemImageLink: item.imageLink,
+                          itemAddress: item.address,
+                          itemOpeningHours: item.openFromTo,
+                          itemLatitude: item.latitude,
+                          itemLongitude: item.longitude,
+                          itemTitle: item.title,
+                          screen: this.state.Screen
+                      });
+                    }}>
+                    <Left>
+                        <Thumbnail source={{ uri: item.imageLink }} />
+                    </Left>
+                    <Body>
+                        
+                        <Text>{item.name}</Text>
+                        
+                    </Body>
+                    <Right>
+                        <Icon name="arrow-forward"  />
+                    </Right>
+                  </ListItem>
+                  ))
+                  :<Text></Text>
+              }
+              <ListItem itemDivider onPress={() => { 
+                                    this.setState(prevState => 
+                                                  ({showOceania: !prevState.showOceania}));}}>
+                <Left>
+                  <Text>Oceania</Text>
+                </Left>
+                <Right>
+                  {
+                    this.state.showOceania
+                      ?<Icon name="arrow-up"  />
+                      :<Icon name="arrow-down"  />
+                  }
+                </Right>
+              </ListItem>
+              { 
+              this.state.showOceania
+                ?this.state.locationsOceania.map((item, key) => (
+                  <ListItem thumbnail key={key} onPress={() => {
+                    /* 1. Navigate to the Details route with params */
+                      this.props.navigation.navigate('Details', {
+                          itemName: item.name,
+                          itemImageLink: item.imageLink,
+                          itemAddress: item.address,
+                          itemOpeningHours: item.openFromTo,
+                          itemLatitude: item.latitude,
+                          itemLongitude: item.longitude,
+                          itemTitle: item.title,
+                          screen: this.state.Screen
+                      });
+                    }}>
+                    <Left>
+                        <Thumbnail source={{ uri: item.imageLink }} />
+                    </Left>
+                    <Body>
+                        
+                        <Text>{item.name}</Text>
+                        
+                    </Body>
+                    <Right>
+                        <Icon name="arrow-forward"  />
+                    </Right>
+                  </ListItem>
+                  ))
+                  :<Text></Text>
+              }
+            </List>
+          </Content>
+        </Container>
+      );
+    }
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

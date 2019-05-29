@@ -1,6 +1,7 @@
 {
   "expo": {
-    "name": "Biennale App HsH",
+    "name": "Biennale Map Venice",
+    "description": "The App includes a navigation system, which makes it easy for you to find the locations you want to see. You will be able to  see more Art in less time and get more impressions of the Biennale Arte Venice.",
     "slug": "biennale-hsh-projekt",
     "privacy": "public",
     "sdkVersion": "32.0.0",
@@ -8,12 +9,12 @@
       "ios",
       "android"
     ],
-    "version": "1.0.0",
+    "version": "3.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "updates": {
@@ -23,7 +24,21 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier" : "net.weblab.LaBiennalediVenezia",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "This apps uses your location to help you find the locations of biennale",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "This apps uses your location to help you find the locations of biennale"
+      }
+    },
+    "android": {
+      "versionCode": 11,
+      "package": "com.weblab.LaViennalediVenezia",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBlPI57z7-FmN1k63lN-FXu8FNrIEtkUsI"
+        }
+      }
     }
   }
 }
