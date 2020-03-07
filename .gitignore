@@ -1,2 +1,3 @@
 #ignore firebase.js where the config of firebase lies
 firebase.js
+node_modules/
